@@ -1,0 +1,26 @@
+.product-card{
+    width: 45%;
+    background-color: rgb(236, 233, 229);
+    border-radius: 9px;
+    padding: 7px;
+    text-align: center;
+    
+    /* position: relative; */
+    /* .heart-icon{
+        position: absolute;
+        font-size: 27px;
+        top: 10px;
+        right: 10px;
+        color: brown;
+    } */
+}
+.product-card img{
+    width: 100%;
+    border-radius: 9px;
+}
+@media (max-width: 425px) {
+    .product-card{
+        width: fit-content;
+        margin: 10px 0;
+    }
+}
