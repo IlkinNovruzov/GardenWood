@@ -10,6 +10,14 @@ const CategoryManager = () => {
     const navigate = useNavigate();
     const apiKey = localStorage.getItem('adminKey');
 
+    useEffect(() => {
+        const allowed = localStorage.getItem('adminAccess') === 'true';
+        if (!allowed) {
+            navigate('/adminpanel'); 
+        }
+        fetchCategories();
+    }, []);
+    
     const fetchCategories = async () => {
         try {
             const res = await fetch('https://localhost:7253/api/admin/category/list', {
@@ -22,13 +30,6 @@ const CategoryManager = () => {
         }
     };
 
-    useEffect(() => {
-        const allowed = localStorage.getItem('adminAccess') === 'true';
-        if (!allowed) {
-            navigate('/adminpanel'); 
-        }
-        fetchCategories();
-    }, []);
 
     const handleAdd = async () => {
         if (!name) return;
