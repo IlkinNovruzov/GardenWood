@@ -7,7 +7,7 @@
      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
  }
 
- .product-form {
+  .product-manager .product-form {
      display: flex;
      flex-direction: column;
      gap: 12px;
@@ -50,6 +50,9 @@
      display: flex;
      justify-content: space-between;
      align-items: center;
+     strong{
+        max-width: 55px;
+     }
  }
 
  .product-manager .product-list li .buttons {
@@ -76,7 +79,7 @@
      margin-bottom: 10px;
  }
 
- .product-list img {
+  .product-manager .product-list img {
      display: block;
      height: 35px;
  }
@@ -87,9 +90,10 @@
      right: -5px;
      background: red;
      color: white;
-     border: 'none';
+     border: none;
      border-radius: 50%;
      width: 20px;
      height: 20px;
      cursor: pointer;
+     text-align: center;
  }

@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import "./ProductCard.css";
 
 function ProductCard({ image, name, price }) {
-    return (
-      <div className="product-card">
-        <img src={image} alt={name} />
+  return (
+    <div className="product-card">
+      <img src={image} alt={name} />
+      <div className="info">
         <h3>{name}</h3>
         <p>{price} $</p>
-        {/* <FaHeart className="heart-icon" /> */}
       </div>
-    );
-  }
-  
-  export default ProductCard;
-  
+    </div>
+  );
+}
+
+export default ProductCard;

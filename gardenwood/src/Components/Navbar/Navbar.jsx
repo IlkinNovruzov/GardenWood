@@ -7,16 +7,46 @@ import "./Navbar.css";
 function Navbar() {
     const navigate = useNavigate();
     const [showInput, setShowInput] = useState(false);
+    const [query, setQuery] = useState("");
+
+    const handleSearch = async () => {
+        if (!query.trim()) return;
+
+        try {
+            const res = await fetch(`https://localhost:7253/api/product/search?query=${query}`);
+            const data = await res.json();
+            navigate('/searchlist', { state: { results: data } });
+        } catch (error) {
+            console.error("Search error:", error);
+        }
+    };
+
     return (
         <div className='navbar'>
-            <img src='/images/logo.png' onClick={() => navigate('/')} />
-            {/* <div onClick={() => navigate('/')}>Garden Wood</div> */}
+            <img src='/images/logo.svg' onClick={() => navigate('/')} />
             <div className="right-container">
                 <div className="search-container">
-                    {showInput && (<input type="text" placeholder="Search..." className="search-input" />)}
-                    <FaSearch className="search-icon" onClick={() => setShowInput(!showInput)} />
-                </div>
-                <FaHeart className="heart-icon" onClick={() => navigate('/')} />
+                    {showInput && (
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="search-input"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") handleSearch();
+                            }}
+                        />
+                    )}
+                    <FaSearch
+                        className="search-icon"
+                        onClick={() => {
+                            if (showInput && query.trim()) {
+                                handleSearch();
+                            }
+                            setShowInput(!showInput);
+                        }}
+                    /> </div>
             </div>
         </div>
     );
