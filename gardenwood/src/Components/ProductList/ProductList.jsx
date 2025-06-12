@@ -13,7 +13,7 @@ function ProductList() {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://gardenwoodasp-001-site1.ltempurl.com/api/product/list?page=${page}&pageSize=4`);
+      const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/product/list?page=${page}&pageSize=4`);
       const data = await res.json();
 
       if (data.length < 4) {
