@@ -1,4 +1,3 @@
-// src/Pages/Admin/AdminAccess.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,9 +7,8 @@ function AdminAccess() {
   const navigate = useNavigate();
 
   const handleAccess = async () => {
-    console.log(apiKey);
     try {
-      const response = await fetch("https://localhost:7253/api/admin/product/validate", {
+      const response = await fetch("http://gardenwoodasp-001-site1.ltempurl.com/api/admin/product/validate", {
         headers: {
           "X-API-KEY": apiKey
         }

@@ -13,7 +13,7 @@ function Navbar() {
         if (!query.trim()) return;
 
         try {
-            const res = await fetch(`https://localhost:7253/api/product/search?query=${query}`);
+            const res = await fetch(`http://gardenwoodasp-001-site1.ltempurl.com/api/product/search?query=${query}`);
             const data = await res.json();
             navigate('/searchlist', { state: { results: data } });
         } catch (error) {
