@@ -20,7 +20,7 @@ const CategoryManager = () => {
     
     const fetchCategories = async () => {
         try {
-            const res = await fetch('http://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list', {
+            const res = await fetch('https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list', {
                 headers: { 'X-API-KEY': apiKey }
             });
             const data = await res.json();
@@ -54,7 +54,7 @@ const CategoryManager = () => {
     const handleEdit = async () => {
         if (!name) return;
         try {
-            const res = await fetch(`http://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/update/${editingId}`, {
+            const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/update/${editingId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const CategoryManager = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this category?")) return;
         try {
-            const res = await fetch(`http://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/delete/${id}`, {
+            const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/delete/${id}`, {
                 method: 'DELETE',
                 headers: { 'X-API-KEY': apiKey }
             });
