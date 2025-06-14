@@ -18,7 +18,7 @@ const ProductManager = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch('https://gardenwoodasp-001-site1.ltempurl.com/api/admin/product/list', {
+            const res = await fetch(window.BASE_URL+'/api/admin/product/list', {
                 headers: { 'X-API-KEY': apiKey }
             });
             if (!res.ok) {
@@ -34,7 +34,7 @@ const ProductManager = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list', {
+            const res = await fetch(window.BASE_URL+'/api/admin/category/list', {
                 headers: { 'X-API-KEY': apiKey }
             });
             if (!res.ok) throw new Error('Failed to fetch categories');
@@ -72,8 +72,8 @@ const ProductManager = () => {
         }
 
         const url = editingProduct
-            ? `https://localhost:7253/api/admin/product/update/${editingProduct.id}`
-            : 'https://localhost:7253/api/admin/product/add';
+            ? window.BASE_URL+`/api/admin/product/update/${editingProduct.id}`
+            : window.BASE_URL+'/api/admin/product/add';
         const method = editingProduct ? 'PUT' : 'POST';
 
         try {
@@ -116,7 +116,7 @@ const ProductManager = () => {
         const confirmDelete = window.confirm('Are you sure you want to delete this image?');
         if (!confirmDelete) return;
         try {
-            const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/admin/product/delete/image/${imageId}`, {
+            const res = await fetch(window.BASE_URL+`/api/admin/product/delete/image/${imageId}`, {
                 method: 'DELETE',
                 headers: { 'X-API-KEY': apiKey }
             });
@@ -141,7 +141,7 @@ const ProductManager = () => {
         if (!confirmDelete) return;
 
         try {
-            const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/admin/product/delete/${id}`, {
+            const res = await fetch(window.BASE_URL+`/api/admin/product/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-API-KEY': apiKey

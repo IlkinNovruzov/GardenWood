@@ -8,7 +8,7 @@ function AdminAccess() {
 
   const handleAccess = async () => {
     try {
-      const response = await fetch("https://gardenwoodasp-001-site1.ltempurl.com/api/admin/product/validate", {
+      const response = await fetch(`${window.BASE_URL}/api/admin/product/validate`, {
         headers: {
           "X-API-KEY": apiKey
         }

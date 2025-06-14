@@ -23,7 +23,7 @@ const CategoryManager = () => {
             // const res = await fetch('https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list', {
             //     headers: { 'X-API-KEY': apiKey }
             // });
-            const res = await fetch('https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list');
+            const res = await fetch(window.BASE_URL+'/api/admin/category/list');
 
             const data = await res.json();
             setCategories(data);
