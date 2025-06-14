@@ -13,9 +13,9 @@ function ProductList() {
     setLoading(true);
 
     try {
-      const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/product/list?page=${page}&pageSize=4`);
+      const res = await fetch(`https://gardenwoodapi-1.onrender.com/WeatherForecast/GetWeatherForecastt`);
       const data = await res.json();
-
+console.log(data)
       if (data.length < 4) {
         setHasMore(false);
       }
