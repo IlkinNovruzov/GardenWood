@@ -13,7 +13,8 @@ function ProductList() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${window.BASE_URL}/WeatherForecast/GetWeatherForecastt`);
+      const res = await fetch(`https://gardenwoodasp-001-site1.ltempurl.com/api/admin/category/list
+`);
       const data = await res.json();
       console.log(data)
       if (data.length < 4) {
