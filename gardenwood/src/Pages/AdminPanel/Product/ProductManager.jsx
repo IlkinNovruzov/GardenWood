@@ -18,7 +18,7 @@ const ProductManager = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch(window.BASE_URL+'/api/product/list', {
+            const res = await fetch(window.BASE_URL+'/api/admin/product/list', {
                 headers: { 'X-API-KEY': apiKey }
             });
             if (!res.ok) {
