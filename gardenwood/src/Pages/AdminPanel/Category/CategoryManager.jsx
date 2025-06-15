@@ -97,7 +97,7 @@ const CategoryManager = () => {
 
     return (
         <div className="category-container">
-            <h2>CategorManager</h2>
+            <h2>CategorManagerle</h2>
             <div className="category-form">
                 <input
                     type="text"
