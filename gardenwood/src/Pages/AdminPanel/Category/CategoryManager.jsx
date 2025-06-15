@@ -11,10 +11,10 @@ const CategoryManager = () => {
     const apiKey = localStorage.getItem('adminKey');
 
     useEffect(() => {
-        // const allowed = localStorage.getItem('adminAccess') === 'true';
-        // if (!allowed) {
-        //     navigate('/adminpanel');
-        // }
+        const allowed = localStorage.getItem('adminAccess') === 'true';
+        if (!allowed) {
+            navigate('/adminpanel');
+        }
         fetchCategories();
     }, []);
 

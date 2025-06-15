@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Product.css';
 
 const ProductManager = () => {
@@ -12,6 +13,10 @@ const ProductManager = () => {
     const [previewImages, setPreviewImages] = useState([]); // {id, url} objeleri
 
     useEffect(() => {
+          const allowed = localStorage.getItem('adminAccess') === 'true';
+        if (!allowed) {
+            navigate('/adminpanel');
+        }
         fetchProducts();
         fetchCategories();
     }, []);
