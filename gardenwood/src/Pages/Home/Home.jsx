@@ -17,22 +17,12 @@ function Home() {
   return (
     <div className='divHome'>
       <FurnitureCarousel />
-      <h1>Categories</h1>
+      {/* <h1>Categories</h1>
       <div className="category-list">
         
-      </div>
-      <h1>Top Rated</h1>
-      <ProductList />
-      {/* <div className="product-list">
-        {products.map(product => (
-          <ProductCard
-            key={product.id}
-            image={product.image}
-            name={product.name}
-            price={product.price}
-          />
-        ))}
       </div> */}
+      <h1>Products</h1>
+      <ProductList />
     </div>
   );
 }
