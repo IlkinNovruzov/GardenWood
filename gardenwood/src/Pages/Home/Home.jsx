@@ -14,6 +14,23 @@ function Home() {
     { id: 6, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 },
     { id: 7, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 }
   ];
+  const [weather, setWeather] = useState([]);
+
+  useEffect(() => {
+    fetch(`${window.BASE_URL}/WeatherForecast}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("API isteği başarısız.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setWeather(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
   return (
     <div className='divHome'>
       <FurnitureCarousel />
@@ -21,8 +38,33 @@ function Home() {
       <div className="category-list">
         
       </div> */}
-      <h1>Producffggffts</h1>
-      <ProductList />
+      <h1>Products</h1>
+       <div>
+      <h2>Weather Forecast</h2>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Temperature C</th>
+            <th>Temperature F</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {weather.map((item, index) => (
+            <tr key={index}>
+              <td>{item.date}</td>
+              <td>{item.temperatureC}</td>
+              <td>{item.temperatureF}</td>
+              <td>{item.summary}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+      {/* <ProductList /> */}
     </div>
   );
 }
