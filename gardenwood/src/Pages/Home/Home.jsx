@@ -21,7 +21,7 @@ function Home() {
       <div className="category-list">
         
       </div> */}
-      <h1>Products</h1>
+      <h1>Producffffts</h1>
       <ProductList />
     </div>
   );
