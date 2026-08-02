@@ -3,6 +3,7 @@ import { FaHeart } from "react-icons/fa";
 import FurnitureCarousel from '../../Components/FurnitureCarousel/FurnitureCarousel';
 import ProductList from '../../Components/ProductList/ProductList';
 import "./Home.css";
+import { useEffect, useState } from 'react';
 
 function Home() {
   const products = [
