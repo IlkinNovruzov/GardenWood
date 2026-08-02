@@ -6,6 +6,10 @@ import "./Home.css";
 import { useEffect, useState } from 'react';
 
 function Home() {
+  const username = "kullanici";
+const password = "parola";
+
+
   const products = [
     { id: 1, image: '/images/blog-1.jpg', name: 'Modern Sofa', price: 499 },
     { id: 2, image: '/images/logo.svg', name: 'Stylish Chair', price: 199 },
@@ -18,7 +22,7 @@ function Home() {
   const [weather, setWeather] = useState([]);
 
   useEffect(() => {
-    fetch(`${window.BASE_URL}/WeatherForecast}`)
+    fetch("https://gwapipublish-001-site1.ltempurl.com/WeatherForecast")
       .then((response) => {
         if (!response.ok) {
           throw new Error("API isteği başarısız.");
@@ -47,7 +51,7 @@ function Home() {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Temperature C</th>
+            <th>bbbbb C</th>
             <th>Temperature F</th>
             <th>Summary</th>
           </tr>
