@@ -22,7 +22,8 @@ const password = "parola";
   const [weather, setWeather] = useState([]);
 
   useEffect(() => {
-    fetch("https://gwapipublish-001-site1.ltempurl.com/WeatherForecast")
+    fetch
+    (window.BASE_URL+'weatherforecast')
       .then((response) => {
         if (!response.ok) {
           throw new Error("API isteği başarısız.");
