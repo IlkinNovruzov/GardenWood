@@ -13,7 +13,7 @@ function AdminAccess() {
           "X-API-KEY": apiKey
         }
       });
-
+console.log(apiKey);
       if (response.ok) {
         localStorage.setItem("adminKey", apiKey);
         localStorage.setItem('adminAccess', 'true');
@@ -31,14 +31,14 @@ function AdminAccess() {
       <h2>Admin Panel Login</h2>
       <input
         type="password"
-        placeholder="API Key giriniz"
+        placeholder="Please Api Key"
         value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
         style={{ padding: "0.5rem", width: "300px", marginBottom: "1rem" }}
       />
       <br />
       <button onClick={handleAccess} style={{ padding: "0.5rem 1rem" }}>
-        Giriş Yap
+        Sign in
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

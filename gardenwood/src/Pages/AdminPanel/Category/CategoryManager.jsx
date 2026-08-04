@@ -35,6 +35,7 @@ const CategoryManager = () => {
 
     const handleAdd = async () => {
         if (!name) return;
+        console.log(apiKey);
         try {
             const res = await fetch(window.BASE_URL+'/api/admin/category/add', {
                 method: 'POST',
