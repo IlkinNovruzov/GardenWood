@@ -11,6 +11,7 @@ const ProductManager = () => {
     const [message, setMessage] = useState('');
     const apiKey = localStorage.getItem('adminKey');
     const [previewImages, setPreviewImages] = useState([]); // {id, url} objeleri
+    const navigate = useNavigate();
 
     useEffect(() => {
           const allowed = localStorage.getItem('adminAccess') === 'true';
@@ -39,9 +40,7 @@ const ProductManager = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch(window.BASE_URL+'/api/admin/category/list', {
-                headers: { 'X-API-KEY': apiKey }
-            });
+            const res = await fetch(window.BASE_URL+'/api/admin/category/list');
             if (!res.ok) throw new Error('Failed to fetch categories');
             const data = await res.json();
             setCategories(data);

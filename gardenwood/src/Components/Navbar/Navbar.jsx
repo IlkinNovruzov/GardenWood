@@ -11,9 +11,9 @@ function Navbar() {
 
     const handleSearch = async () => {
         if (!query.trim()) return;
-
+ 
         try {
-            const res = await fetch(`${window.BASE_URL}/api/product/search?query=${query}`);
+            const res = await fetch(`${window.BASE_URL}/api/home/search?query=${query}`);
             const data = await res.json();
             navigate('/searchlist', { state: { results: data } });
         } catch (error) {

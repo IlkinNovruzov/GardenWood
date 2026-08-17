@@ -8,10 +8,10 @@ function ProductListPage() {
     return (
         <div className="product-list">
             {products.length === 0 ? (
-                <p>Dont found product.</p>
+                <p className="no-products">Don't found product.</p>
             ) : (
                 products.map(product => (
-                    <ProductCard
+                    <ProductCard 
                         key={product.id}
                         image={product.images[0]?.imageUrl}
                         name={product.name}

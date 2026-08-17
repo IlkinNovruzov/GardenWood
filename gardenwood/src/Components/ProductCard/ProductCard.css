@@ -27,7 +27,7 @@
 
 @media (max-width: 425px) {
     .product-card {
-        width: 95%;
+        width: 85%;
         margin: 10px 0;
         font-size: medium;
     }

@@ -11,9 +11,19 @@
     margin: auto;
     flex-wrap: wrap;
 }
-
+.no-products{
+    color: rgb(166, 115, 34);
+    font-size: 50px;
+    text-align: center;
+    width: 100%;
+}
 @media (max-width: 425px) {
     .divHome .product-list{
+    
         flex-direction: column;
+        width: 70%;
+    }
+    .no-products{
+        font-size: 30px;
     }
 }

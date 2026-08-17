@@ -23,7 +23,7 @@ const password = "parola";
 
   useEffect(() => {
     fetch
-    (window.BASE_URL+'weatherforecast')
+    (window.BASE_URL+'/WeatherForecast')
       .then((response) => {
         if (!response.ok) {
           throw new Error("API isteği başarısız.");
