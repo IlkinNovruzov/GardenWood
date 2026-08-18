@@ -6,24 +6,34 @@ import "./Home.css";
 import { useEffect, useState } from 'react';
 
 function Home() {
-  const username = "kullanici";
-const password = "parola";
-
-
-  const products = [
-    { id: 1, image: '/images/blog-1.jpg', name: 'Modern Sofa', price: 499 },
-    { id: 2, image: '/images/logo.svg', name: 'Stylish Chair', price: 199 },
-    { id: 3, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 },
-    { id: 4, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 },
-    { id: 5, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 },
-    { id: 6, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 },
-    { id: 7, image: '/images/blog-3.jpg', name: 'Stylish Chair', price: 199 }
-  ];
+  const [products, setProducts] = useState([]);
+  const apiKey = localStorage.getItem('adminKey');
+  useEffect(() => {
+    const allowed = localStorage.getItem('adminAccess') === 'true';
+    if (!allowed) {
+      navigate('/adminpanel');
+    }
+    fetchProducts();
+  }, []);
   const [weather, setWeather] = useState([]);
-
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(window.BASE_URL + '/api/admin/product/list', {
+        headers: { 'X-API-KEY': apiKey }
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error("API error:", err.message);
+    }
+  };
   useEffect(() => {
     fetch
-    (window.BASE_URL+'/WeatherForecast')
+      (window.BASE_URL + '/WeatherForecast')
       .then((response) => {
         if (!response.ok) {
           throw new Error("API isteği başarısız.");
@@ -44,32 +54,51 @@ const password = "parola";
       <div className="category-list">
         
       </div> */}
-      <h1>Products</h1>
-       <div>
-      <h2>Weather Forecast</h2>
+      <section className="home-products">
+        <h2>Our Products</h2>
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>bbbbb C</th>
-            <th>Temperature F</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
+        <div className="products-container">
+          {products.map((product) => (
+            <div className="product-card" key={product.id}>
 
-        <tbody>
-          {weather.map((item, index) => (
-            <tr key={index}>
-              <td>{item.date}</td>
-              <td>{item.temperatureC}</td>
-              <td>{item.temperatureF}</td>
-              <td>{item.summary}</td>
-            </tr>
+              <div className="product-image">
+                <img src={product.images[0]?.imageUrl || ''} alt={product.name} />
+              </div>
+
+              <div className="product-info">
+                <h3>{product.name}</h3>
+                <p className="product-price">${product.price}</p>
+              </div>
+
+            </div>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </div>
+      </section>
+      <div>
+        <h2>Weather Forecast</h2>
+
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>bbbbb C</th>
+              <th>Temperature F</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {weather.map((item, index) => (
+              <tr key={index}>
+                <td>{item.date}</td>
+                <td>{item.temperatureC}</td>
+                <td>{item.temperatureF}</td>
+                <td>{item.summary}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* <ProductList /> */}
     </div>
   );
