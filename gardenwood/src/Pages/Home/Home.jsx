@@ -9,18 +9,12 @@ function Home() {
   const [products, setProducts] = useState([]);
   const apiKey = localStorage.getItem('adminKey');
   useEffect(() => {
-    const allowed = localStorage.getItem('adminAccess') === 'true';
-    if (!allowed) {
-      navigate('/adminpanel');
-    }
     fetchProducts();
   }, []);
   const [weather, setWeather] = useState([]);
   const fetchProducts = async () => {
     try {
-      const res = await fetch(window.BASE_URL + '/api/admin/product/list', {
-        headers: { 'X-API-KEY': apiKey }
-      });
+      const res = await fetch(window.BASE_URL + '/api/home/list');
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text);
@@ -35,6 +29,7 @@ function Home() {
     fetch
       (window.BASE_URL + '/WeatherForecast')
       .then((response) => {
+        console.log("Weather API response:", response);
         if (!response.ok) {
           throw new Error("API isteği başarısız.");
         }
@@ -47,6 +42,7 @@ function Home() {
         console.error(error);
       });
   }, []);
+  console.log("Weather data:", weather);
   return (
     <div className='divHome'>
       <FurnitureCarousel />
