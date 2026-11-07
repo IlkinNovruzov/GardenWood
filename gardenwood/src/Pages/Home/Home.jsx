@@ -1,101 +1,226 @@
-import * as React from 'react';
-import { FaHeart } from "react-icons/fa";
+
+import { useEffect, useState, useRef } from 'react';
 import FurnitureCarousel from '../../Components/FurnitureCarousel/FurnitureCarousel';
-import ProductList from '../../Components/ProductList/ProductList';
-import "./Home.css";
-import { useEffect, useState } from 'react';
+import './Home.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [products, setProducts] = useState([]);
-  const apiKey = localStorage.getItem('adminKey');
-  useEffect(() => {
-    fetchProducts();
-  }, []);
   const [weather, setWeather] = useState([]);
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch(window.BASE_URL + '/api/home/list');
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text);
-      }
-      const data = await res.json();
-      setProducts(data);
-    } catch (err) {
-      console.error("API error:", err.message);
-    }
-  };
+
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [weatherLoading, setWeatherLoading] = useState(true);
+
+  const [productsError, setProductsError] = useState(null);
+  const [weatherError, setWeatherError] = useState(null);
+
   useEffect(() => {
-    fetch
-      (window.BASE_URL + '/WeatherForecast')
-      .then((response) => {
-        console.log("Weather API response:", response);
+    const controller = new AbortController();
+
+    const fetchProducts = async () => {
+      try {
+        setProductsLoading(true);
+
+        const response = await fetch(
+          `${window.BASE_URL}/api/home/list`,
+          { signal: controller.signal }
+        );
+
         if (!response.ok) {
-          throw new Error("API isteği başarısız.");
+          throw new Error('Products could not be loaded.');
         }
-        return response.json();
-      })
-      .then((data) => {
-        setWeather(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
+        const data = await response.json();
+        setProducts(Array.isArray(data) ? data : []);
+
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          setProductsError(error.message);
+          console.error('Products API error:', error);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setProductsLoading(false);
+        }
+      }
+    };
+
+    const fetchWeather = async () => {
+      try {
+        setWeatherLoading(true);
+
+        const response = await fetch(
+          `${window.BASE_URL}/WeatherForecast`,
+          { signal: controller.signal }
+        );
+
+        if (!response.ok) {
+          throw new Error('Weather data could not be loaded.');
+        }
+
+        const data = await response.json();
+        setWeather(Array.isArray(data) ? data : []);
+
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          setWeatherError(error.message);
+          console.error('Weather API error:', error);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setWeatherLoading(false);
+        }
+      }
+    };
+
+    fetchProducts();
+    fetchWeather();
+
+    return () => controller.abort();
   }, []);
-  console.log("Weather data:", weather);
+useEffect(() => {
+  const track = document.querySelector('.categories-track');
+
+  if (!track) return;
+
+  const interval = setInterval(() => {
+    const maxScroll = track.scrollWidth - track.clientWidth;
+
+    if (track.scrollLeft >= maxScroll - 5) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: 250, behavior: 'smooth' });
+    }
+  }, 3500);
+
+  return () => clearInterval(interval);
+}, []);
   return (
-    <div className='divHome'>
+    <div className="divHome">
+
       <FurnitureCarousel />
-      {/* <h1>Categories</h1>
-      <div className="category-list">
-        
-      </div> */}
+
+
+      <section className="categories-section">
+
+        <div className="categories-heading">
+          <div>
+            <h2>Explore Categories</h2>
+            <p>Find the perfect furniture for your outdoor space.</p>
+          </div>
+        </div>
+
+        <div className="categories-carousel-wrapper">
+
+          <div className="categories-track">
+
+            {[
+              { id: 1, name: 'Sofas', image: '/images/blog-1.jpg', slug: 'sofas' },
+              { id: 2, name: 'Chairs', image: '/images/blog-2.jpg', slug: 'chairs' },
+              { id: 3, name: 'Tables', image: '/images/blog-3.jpg', slug: 'tables' },
+              { id: 4, name: 'Dining Sets', image: '/images/blog-1.jpg', slug: 'dining-sets' },
+              { id: 5, name: 'Loungers', image: '/images/blog-2.jpg', slug: 'loungers' },
+              { id: 6, name: 'Accessories', image: '/images/blog-3.jpg', slug: 'accessories' }
+            ].map((category) => (
+
+              <Link
+                to={`/products?category=${category.slug}`}
+                className="category-item"
+                key={category.id}
+              >
+                <div className="category-image">
+                  <img src={category.image} alt={category.name} />
+                </div>
+
+                <h3>{category.name}</h3>
+              </Link>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
       <section className="home-products">
-        <h2>Our Products</h2>
+        <h2>Our Categories</h2>
+
+        {productsLoading && <p>Loading products...</p>}
+
+        {productsError && (
+          <p className="error-message">{productsError}</p>
+        )}
+
+        {!productsLoading && !productsError && products.length === 0 && (
+          <p>No products available.</p>
+        )}
 
         <div className="products-container">
-          {products.map((product) => (
-            <div className="product-card" key={product.id}>
+          {products.map((product) => {
+            const imageUrl = product.images?.[0]?.imageUrl;
 
-              <div className="product-image">
-                <img src={product.images[0]?.imageUrl || ''} alt={product.name} />
+            return (
+
+              <div className="product-card" key={product.id}>
+
+                <div className="product-image">
+                  <img
+                    src={imageUrl || '/images/no-image.webp'}
+                    alt={product.name || 'Furniture product'}
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="product-price">
+                    ${product.price}
+                  </p>
+                </div>
+
               </div>
-
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p className="product-price">${product.price}</p>
-              </div>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
-      <div>
+
+      <section className="weather-section">
         <h2>Weather Forecast</h2>
 
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>bbbbb C</th>
-              <th>Temperature F</th>
-              <th>Summary</th>
-            </tr>
-          </thead>
+        {weatherLoading && <p>Loading weather...</p>}
 
-          <tbody>
-            {weather.map((item, index) => (
-              <tr key={index}>
-                <td>{item.date}</td>
-                <td>{item.temperatureC}</td>
-                <td>{item.temperatureF}</td>
-                <td>{item.summary}</td>
+        {weatherError && (
+          <p className="error-message">{weatherError}</p>
+        )}
+
+        {!weatherLoading && !weatherError && (
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Temperature C</th>
+                <th>Temperature F</th>
+                <th>Summary</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {/* <ProductList /> */}
+            </thead>
+
+            <tbody>
+              {weather.map((item) => (
+                <tr key={item.date}>
+                  <td>{item.date}</td>
+                  <td>{item.temperatureC}</td>
+                  <td>{item.temperatureF}</td>
+                  <td>{item.summary}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+
     </div>
   );
 }
