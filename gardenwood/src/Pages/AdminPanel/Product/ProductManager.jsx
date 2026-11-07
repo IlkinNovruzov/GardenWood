@@ -1,177 +1,330 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Product.css';
 
 const ProductManager = () => {
+    const API_URL = window.BASE_URL + '/api/admin';
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+
     const [editingProduct, setEditingProduct] = useState(null);
     const [form, setForm] = useState({ name: '', price: '', description: '', categoryId: '' });
-    const [images, setImages] = useState([]); // yeni dosyalar (File array)
+
+    const [images, setImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
+
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);
+    const [deletingImageId, setDeletingImageId] = useState(null);
+
     const apiKey = localStorage.getItem('adminKey');
-    const [previewImages, setPreviewImages] = useState([]); // {id, url} objeleri
     const navigate = useNavigate();
 
+    // API helper
+    const apiRequest = async (endpoint, options = {}) => {
+        const res = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                ...(options.headers || {}),
+                'X-API-KEY': apiKey
+            }
+        });
+
+        if (!res.ok) {
+            const error = await res.text();
+            throw new Error(error || `Request failed: ${res.status}`);
+        }
+
+        if (res.status === 204) return null;
+
+        const contentType = res.headers.get('content-type');
+
+        return contentType?.includes('application/json')
+            ? await res.json()
+            : null;
+    };
+
+    // Load initial data
     useEffect(() => {
         const allowed = localStorage.getItem('adminAccess') === 'true';
-        if (!allowed) {
-            navigate('/adminpanel');
+
+        if (!allowed || !apiKey) {
+            navigate('/adminpanel', { replace: true });
+            return;
         }
-        fetchProducts();
-        fetchCategories();
+
+        loadData();
     }, []);
 
-    const fetchProducts = async () => {
+    const loadData = async () => {
         try {
-            const res = await fetch(window.BASE_URL + '/api/admin/product/list', {
-                headers: { 'X-API-KEY': apiKey }
-            });
-            if (!res.ok) {
-                const text = await res.text();
-                throw new Error(text);
-            }
-            const data = await res.json();
-            setProducts(data);
+            const [productData, categoryData] = await Promise.all([
+                apiRequest('/product/list'),
+                apiRequest('/category/list', { headers: {} })
+            ]);
+
+            setProducts(productData || []);
+            setCategories(categoryData || []);
+
         } catch (err) {
-            console.error("API error:", err.message);
+            console.error('Loading error:', err);
+            setMessage(err.message);
         }
     };
 
-    const fetchCategories = async () => {
-        try {
-            const res = await fetch(window.BASE_URL + '/api/admin/category/list');
-            if (!res.ok) throw new Error('Failed to fetch categories');
-            const data = await res.json();
-            setCategories(data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
+    // Form change
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
+    // Image selection
     const handleFileChange = (e) => {
-        setImages(Array.from(e.target.files));
+        const files = Array.from(e.target.files || []);
+
+        const validFiles = files.filter(file =>
+            file.type.startsWith('image/') &&
+            file.size <= 5 * 1024 * 1024
+        );
+
+        if (validFiles.length !== files.length) {
+            setMessage('Only images up to 5 MB are allowed.');
+        } else {
+            setMessage('');
+        }
+
+        setImages(validFiles);
+
+        setPreviewImages(prev => {
+            prev
+                .filter(img => img.isNew)
+                .forEach(img => URL.revokeObjectURL(img.url));
+
+            return validFiles.map((file, index) => ({
+                id: `new-${index}`,
+                url: URL.createObjectURL(file),
+                isNew: true
+            }));
+        });
     };
 
+    // Reset form
+    const resetForm = () => {
+        previewImages
+            .filter(img => img.isNew)
+            .forEach(img => URL.revokeObjectURL(img.url));
+
+         setForm({ name: '', price: '', description: '', categoryId: '' });
+        setImages([]);
+        setPreviewImages([]);
+        setEditingProduct(null);
+        setMessage('');
+
+        const input = document.getElementById('product-images');
+        if (input) input.value = '';
+    };
+
+    // Add / Update
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (images.length === 0 && previewImages.length === 0) {
-            setMessage("Please add at least one image.");
+        if (!form.name.trim() || !form.categoryId || !form.price) {
+            setMessage('Please fill in all required fields.');
+            return;
+        }
+
+        if (!editingProduct && images.length === 0) {
+            setMessage('Please add at least one image.');
             return;
         }
 
         const formData = new FormData();
-        formData.append("Name", form.name);
-        formData.append("Price", form.price);
-        formData.append("Description", form.description);
-        formData.append("CategoryId", form.categoryId);
 
-        for (let i = 0; i < images.length; i++) {
-            formData.append("Images", images[i]);
-        }
+        Object.entries(form).forEach(([key, value]) => {
+            formData.append(
+                key.charAt(0).toUpperCase() + key.slice(1),
+                value
+            );
+        });
 
-        const url = editingProduct
-            ? window.BASE_URL + `/api/admin/product/update/${editingProduct.id}`
-            : window.BASE_URL + '/api/admin/product/add';
-        const method = editingProduct ? 'PUT' : 'POST';
+        images.forEach(file => {
+            formData.append('Images', file);
+        });
+
+        const endpoint = editingProduct
+            ? `/product/update/${editingProduct.id}`
+            : '/product/add';
+
+        setLoading(true);
+        setMessage('');
 
         try {
-            const res = await fetch(url, {
-                method,
-                headers: {
-                    "X-API-KEY": apiKey,
-                },
+            await apiRequest(endpoint, {
+                method: editingProduct ? 'PUT' : 'POST',
                 body: formData
             });
 
-            if (!res.ok) throw new Error('Operation failed');
+            setMessage(
+                editingProduct
+                    ? 'Product updated successfully.'
+                    : 'Product added successfully.'
+            );
 
-            setMessage(editingProduct ? 'Product updated' : 'Product added');
-            setForm({ name: '', price: '', description: '', categoryId: '' });
-            setImages([]);
-            setPreviewImages([]);
-            setEditingProduct(null);
-            fetchProducts();
+            resetForm();
+            await fetchProducts();
+
         } catch (err) {
-            setMessage('An error occurred');
+            console.error('Submit error:', err);
+            setMessage(err.message || 'An error occurred.');
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleEdit = (product) => {
-        setEditingProduct(product);
-        setForm({
-            name: product.name,
-            price: product.price,
-            description: product.description || '',
-            categoryId: product.categoryId,
-        });
-        const imagesWithId = product.images.map(img => ({ id: img.id, url: img.imageUrl }));
-        setPreviewImages(imagesWithId);
-        setImages([]);
-        setMessage('');
+    // Fetch products
+    const fetchProducts = async () => {
+        const data = await apiRequest('/product/list');
+        setProducts(data || []);
     };
 
-    const handleDeleteImage = async (imageId, index) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this image?');
-        if (!confirmDelete) return;
+    // Edit
+    const handleEdit = (product) => {
+        previewImages
+            .filter(img => img.isNew)
+            .forEach(img => URL.revokeObjectURL(img.url));
+
+        setEditingProduct(product);
+
+        setForm({
+            name: product.name || '',
+            price: product.price ?? '',
+            description: product.description || '',
+            categoryId: String(product.categoryId || '')
+        });
+
+        setImages([]);
+
+        setPreviewImages(
+            (product.images || []).map(img => ({
+                id: img.id,
+                url: img.imageUrl,
+                isNew: false
+            }))
+        );
+
+        setMessage('');
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // Delete individual image
+    const handleDeleteImage = async (imageId) => {
+        if (!window.confirm('Delete this image?')) return;
+
+        setDeletingImageId(imageId);
+
         try {
-            const res = await fetch(window.BASE_URL + `/api/admin/product/delete/image/${imageId}`, {
-                method: 'DELETE',
-                headers: { 'X-API-KEY': apiKey }
+            await apiRequest(`/product/delete/image/${imageId}`, {
+                method: 'DELETE'
             });
 
-            if (!res.ok) throw new Error('Delete failed');
+            setPreviewImages(prev =>
+                prev.filter(img => img.id !== imageId)
+            );
 
-            setPreviewImages(prev => prev.filter((_, i) => i !== index));
-
-            setEditingProduct(prev => ({
+            setEditingProduct(prev => prev ? ({
                 ...prev,
                 images: prev.images.filter(img => img.id !== imageId)
-            }));
+            }) : null);
 
-            setMessage('Image deleted');
+            setMessage('Image deleted successfully.');
+
         } catch (err) {
-            alert('Image delete failed');
+            setMessage(err.message || 'Image delete failed.');
+        } finally {
+            setDeletingImageId(null);
         }
     };
 
+    // Delete product
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this product?');
-        if (!confirmDelete) return;
+        if (!window.confirm('Delete this product?')) return;
+
+        setDeletingId(id);
 
         try {
-            const res = await fetch(window.BASE_URL + `/api/admin/product/delete/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-API-KEY': apiKey
-                }
+            await apiRequest(`/product/delete/${id}`, {
+                method: 'DELETE'
             });
 
-            if (!res.ok) throw new Error('Delete failed');
-            setMessage('Product deleted');
-            fetchProducts();
+            setProducts(prev => prev.filter(p => p.id !== id));
+
+            if (editingProduct?.id === id) {
+                resetForm();
+            }
+
+            setMessage('Product deleted successfully.');
+
         } catch (err) {
-            setMessage('An error occurred while deleting');
+            setMessage(err.message || 'Product delete failed.');
+        } finally {
+            setDeletingId(null);
         }
     };
+
+    // Cleanup temporary preview URLs
+    useEffect(() => {
+        return () => {
+            previewImages
+                .filter(img => img.isNew)
+                .forEach(img => URL.revokeObjectURL(img.url));
+        };
+    }, [previewImages]);
 
     return (
         <div className="product-manager">
-            <h2>{editingProduct ? 'Edit Product' : 'Add Product'}</h2>
+
+            <h2>
+                {editingProduct ? 'Edit Product' : 'Add Product'}
+            </h2>
+
             <form onSubmit={handleSubmit} className="product-form">
-                <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
-                <input name="price" value={form.price} onChange={handleChange} placeholder="Price" type="number" required />
+
+                <input
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Name"
+                    required
+                />
+
+                <input
+                    name="price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.price}
+                    onChange={handleChange}
+                    placeholder="Price"
+                    required
+                />
+
                 <input
                     name="description"
                     value={form.description}
                     onChange={handleChange}
                     placeholder="Description"
                 />
+
                 <select
                     name="categoryId"
                     value={form.categoryId}
@@ -179,55 +332,111 @@ const ProductManager = () => {
                     required
                 >
                     <option value="">Select Category</option>
+
                     {categories.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
                     ))}
                 </select>
+
                 <input
+                    id="product-images"
                     type="file"
+                    accept="image/jpeg,image/png,image/webp"
                     multiple
                     onChange={handleFileChange}
                     required={!editingProduct}
                 />
-                <div className="preview-images" style={{ marginTop: '10px' }}>
+
+                <div className="preview-images">
+
                     {previewImages.map((img, index) => (
-                        <div
-                            key={img.id || index}
-                            style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}
-                        >
+                        <div key={img.id} className="image-preview-item">
+
                             <img
                                 src={img.url}
-                                alt={`preview-${index}`}
-                                width={100}
-                                height={100}
-                                style={{ objectFit: 'cover', borderRadius: '5px' }}
+                                alt={`Product ${index + 1}`}
                             />
-                            <div onClick={() => handleDeleteImage(img.id, index)} className='close-button'>-</div>
+
+                            {!img.isNew && (
+                                <button
+                                    type="button"
+                                    className="close-button"
+                                    disabled={deletingImageId === img.id}
+                                    onClick={() => handleDeleteImage(img.id)}
+                                >
+                                    {deletingImageId === img.id ? '...' : '×'}
+                                </button>
+                            )}
+
                         </div>
                     ))}
+
                 </div>
-                <button type="submit">{editingProduct ? 'Update' : 'Add'}</button>
+
+                <button type="submit" disabled={loading}>
+                    {loading
+                        ? 'Please wait...'
+                        : editingProduct ? 'Update' : 'Add'}
+                </button>
+
+                {editingProduct && (
+                    <button
+                        type="button"
+                        onClick={resetForm}
+                        disabled={loading}
+                    >
+                        Cancel
+                    </button>
+                )}
+
             </form>
 
-            {message && <p className="message">{message}</p>}
+            {message && (
+                <p className="message">{message}</p>
+            )}
 
-            <h3>Product List</h3>
+            <h3>Product List ({products.length})</h3>
+
             <ul className="product-list">
-                {products.map(p => (
-                    <li key={p.id}>
+
+                {products.map(product => (
+                    <li key={product.id}>
+
                         <img
-                            src={p.images[0]?.imageUrl || ''}
-                            alt={p.name}
-                            style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '10px' }}
+                            src={product.images?.[0]?.imageUrl || ''}
+                            alt={product.name}
                         />
-                        <strong>{p.name}</strong> ${p.price}
-                        <div className='buttons'>
-                            <button onClick={() => handleEdit(p)}>Edit</button>
-                            <button onClick={() => handleDelete(p.id)}>Delete</button>
+
+                        <strong>{product.name}</strong>
+
+                        <span>${product.price}</span>
+
+                        <div className="buttons">
+
+                            <button
+                                onClick={() => handleEdit(product)}
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                onClick={() => handleDelete(product.id)}
+                                disabled={deletingId === product.id}
+                            >
+                                {deletingId === product.id
+                                    ? 'Deleting...'
+                                    : 'Delete'}
+                            </button>
+
                         </div>
+
                     </li>
                 ))}
+
             </ul>
+
         </div>
     );
 };

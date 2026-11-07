@@ -10,6 +10,7 @@ import AdminAccess from './Pages/AdminPanel/AdminAccess';
 import Dashboard from './Pages/AdminPanel/Dashboard';
 import CategoryManager from './Pages/AdminPanel/Category/CategoryManager';
 import ProductManager from './Pages/AdminPanel/Product/ProductManager';
+import Footer from './Components/Footer/Footer';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/adminpanel/categories" element={<CategoryManager />} />
         <Route path="/adminpanel/products" element={<ProductManager />} />
       </Routes>
+      <Footer />
     </Router>
   )
 }

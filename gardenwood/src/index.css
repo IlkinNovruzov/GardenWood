@@ -1,18 +1,29 @@
-html,body,#root{
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+
+/* Global Layout Fix */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.d-flex {
-  display: flex;
-  justify-content: space-around;
+body {
+    overflow-x: hidden;
 }
+
+#root {
+    min-height: 100vh;
+}
+
 
 
 .carousel img{

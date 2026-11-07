@@ -1,5 +1,6 @@
 
 import { useEffect, useState, useRef } from 'react';
+import {FaAward,FaPalette,FaShieldAlt,FaCouch} from 'react-icons/fa';
 import FurnitureCarousel from '../../Components/FurnitureCarousel/FurnitureCarousel';
 import './Home.css';
 import { Link } from 'react-router-dom';
@@ -78,28 +79,27 @@ function Home() {
 
     return () => controller.abort();
   }, []);
-useEffect(() => {
-  const track = document.querySelector('.categories-track');
+  useEffect(() => {
+    const track = document.querySelector('.categories-track');
 
-  if (!track) return;
+    if (!track) return;
 
-  const interval = setInterval(() => {
-    const maxScroll = track.scrollWidth - track.clientWidth;
+    const interval = setInterval(() => {
+      const maxScroll = track.scrollWidth - track.clientWidth;
 
-    if (track.scrollLeft >= maxScroll - 5) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      track.scrollBy({ left: 250, behavior: 'smooth' });
-    }
-  }, 3500);
+      if (track.scrollLeft >= maxScroll - 5) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: 250, behavior: 'smooth' });
+      }
+    }, 3500);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="divHome">
 
       <FurnitureCarousel />
-
 
       <section className="categories-section">
 
@@ -142,7 +142,80 @@ useEffect(() => {
         </div>
 
       </section>
+<section className="why-choose-us">
 
+  <h2 className="why-main-title">
+    Niyə Garden Wood?
+  </h2>
+
+  <div className="why-content">
+
+    <div className="why-features">
+
+      <div className="why-feature-card">
+        <div className="why-feature-icon icon-blue">
+          <FaAward />
+        </div>
+        <div className="why-feature-text">
+          <h3>Premium Keyfiyyət</h3>
+          <p>
+            Hər detalda yüksək keyfiyyət və
+            peşəkar istehsal yanaşması.
+          </p>
+        </div>
+      </div>
+
+      <div className="why-feature-card">
+        <div className="why-feature-icon icon-purple">
+          <FaPalette />
+        </div>
+        <div className="why-feature-text">
+          <h3>Fərdi Dizayn</h3>
+          <p>
+            Zövqünüzə uyğun rəng, ölçü və
+            material seçimləri.
+          </p>
+        </div>
+      </div>
+
+      <div className="why-feature-card">
+        <div className="why-feature-icon icon-red">
+          <FaShieldAlt />
+        </div>
+        <div className="why-feature-text">
+          <h3>Davamlı Materiallar</h3>
+          <p>
+            Uzunmüddətli istifadə üçün
+            seçilmiş keyfiyyətli materiallar.
+          </p>
+        </div>
+      </div>
+
+      <div className="why-feature-card">
+        <div className="why-feature-icon icon-green">
+          <FaCouch />
+        </div>
+        <div className="why-feature-text">
+          <h3>Müasir Dizayn</h3>
+          <p>
+            Bağ və həyətinizə xüsusi görünüş
+            qatan müasir mebel kolleksiyaları.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div className="why-image">
+      <img
+        src="/images/blog-1.jpg"
+        alt="Garden Wood premium bağ mebeli"
+      />
+    </div>
+
+  </div>
+
+</section>
 
 
       <section className="home-products">

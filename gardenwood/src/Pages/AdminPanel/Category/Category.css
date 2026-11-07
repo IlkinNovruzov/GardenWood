@@ -1,77 +1,431 @@
-.category-container {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+/* ================================
+   GARDEN WOOD - CATEGORY MANAGER
+================================ */
+
+.category-manager {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 35px;
+    color: #252525;
+    font-family: inherit;
+    box-sizing: border-box;
 }
 
-.category-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
+/* HEADER */
+
+.category-manager h2 {
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    margin: 0 0 8px;
+    color: #202020;
 }
+
+.category-manager > h2::after {
+    content: "Manage your furniture categories";
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: #929292;
+    letter-spacing: 0;
+    margin-top: 8px;
+}
+
+/* FORM CARD */
 
 .category-form {
+    max-width: 100%;
+    margin-top: 28px;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #ededed;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+/* INPUT */
+
+.category-form input[type="text"] {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    background: #fafafa;
+
+    font-size: 14px;
+    color: #252525;
+    outline: none;
+    transition: 0.2s;
+}
+
+.category-form input[type="text"]:focus {
+    border-color: #292929;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.category-form input::placeholder {
+    color: #a0a0a0;
+}
+
+/* IMAGE UPLOAD */
+
+.category-upload {
+    grid-column: 1 / -1;
+
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.category-upload label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.category-upload input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+
+    background: #fafafa;
+    border: 1px dashed #cccccc;
+    border-radius: 9px;
+
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.category-upload input[type="file"]:hover {
+    border-color: #555;
+    background: #f5f5f5;
+}
+
+/* IMAGE PREVIEW */
+
+.category-preview {
+    width: 220px;
+    height: 145px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #ededed;
+    background: #f5f5f5;
+}
+
+.category-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* FORM BUTTONS */
+
+.category-form-buttons {
+    grid-column: 1 / -1;
+
+    display: flex;
+    align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-top: 5px;
 }
 
-.category-form input {
-    flex: 1;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+.category-form-buttons button {
+    min-width: 145px;
+    height: 44px;
+    padding: 0 22px;
 
-.category-form button {
-    padding: 8px 12px;
     border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
+    border-radius: 7px;
+
+    background: #222222;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-.category-form button:hover {
-    background-color: #218838;
+.category-form-buttons button:hover {
+    background: #444444;
+    transform: translateY(-1px);
 }
 
-.category-list {
-    list-style: none;
-    padding: 0;
+.category-form-buttons button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
 }
 
-.category-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 8px;
+.category-form-buttons .cancel-button {
+    background: #eeeeee;
+    color: #333333;
 }
 
-.category-list button {
-    margin-left: 5px;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.category-form-buttons .cancel-button:hover {
+    background: #dddddd;
 }
 
-.category-list .delete-btn {
-    background-color: #dc3545;
-    color: white;
-}
-
-.category-list .delete-btn:hover {
-    background-color: #c82333;
-}
+/* MESSAGE */
 
 .category-message {
+    margin: 18px 0;
+    padding: 12px 16px;
+
+    background: #f4f4f4;
+    border-radius: 7px;
+
+    color: #444;
+    font-size: 13px;
+}
+
+/* CATEGORY SECTION */
+
+.category-manager h3 {
+    margin: 42px 0 20px;
+
+    font-size: 19px;
+    font-weight: 700;
+    color: #252525;
+    letter-spacing: -0.3px;
+}
+
+/* CATEGORY GRID */
+
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* CATEGORY CARD */
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid #ededed;
+    border-radius: 12px;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+}
+
+/* CATEGORY IMAGE */
+
+.category-item > img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+    background: #f2f2f2;
+}
+
+/* CATEGORY INFO */
+
+.category-info {
+    padding: 17px 17px 12px;
+}
+
+.category-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 650;
+    color: #292929;
+}
+
+/* CATEGORY BUTTONS */
+
+.category-buttons {
+    display: flex;
+    gap: 9px;
+    padding: 0 17px 17px;
+}
+
+.category-buttons button {
+    flex: 1;
+    height: 37px;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #333333;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.category-buttons button:hover {
+    background: #252525;
+    color: #ffffff;
+    border-color: #252525;
+}
+
+.category-buttons .delete-button {
+    color: #c0392b;
+    border-color: #f0dada;
+    background: #ffffff;
+}
+
+.category-buttons .delete-button:hover {
+    background: #c0392b;
+    border-color: #c0392b;
+    color: #ffffff;
+}
+.category-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: #f2f2f2;
+}
+
+.category-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.category-item:hover .category-image-wrapper img {
+    transform: scale(1.05);
+}
+
+.category-id {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.92);
+    color: #333;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.category-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    gap: 8px;
+}
+
+.product-count {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #777;
+    font-size: 12px;
+}
+
+.category-dot {
+    width: 7px;
+    height: 7px;
+    background: #6b9b78;
+    border-radius: 50%;
+}
+
+.category-status {
+    padding: 5px 9px;
+    background: #edf5ee;
+    color: #477b50;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.category-info {
+    padding: 17px 17px 14px;
+}
+/* EMPTY STATE */
+
+.category-list > p {
+    grid-column: 1 / -1;
+    padding: 35px;
     text-align: center;
-    margin-top: 10px;
-    color: #007bff;
+    color: #999;
+    background: #fafafa;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+    .category-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .category-manager {
+        padding: 25px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .category-manager {
+        padding: 16px;
+    }
+
+    .category-manager h2 {
+        font-size: 23px;
+    }
+
+    .category-form {
+        padding: 19px;
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .category-upload {
+        grid-column: auto;
+    }
+
+    .category-form-buttons {
+        grid-column: auto;
+        flex-wrap: wrap;
+    }
+
+    .category-form-buttons button {
+        flex: 1;
+        min-width: 110px;
+    }
+
+    .category-list {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .category-item > img {
+        height: 210px;
+    }
+
+    .category-manager h3 {
+        margin-top: 30px;
+    }
 }

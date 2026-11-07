@@ -1,0 +1,233 @@
+
+/* =========================================
+   MAIN FOOTER
+========================================= */
+
+.main-footer {
+    width: 100%;
+    background: #52cc95;
+    color: #fff;
+    padding: 65px 5% 45px;
+    overflow: hidden;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* =========================================
+   FOOTER CONTENT
+========================================= */
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    min-height: 160px;
+}
+
+/* Columns */
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 5px 30px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-contact {
+    border-left: none;
+    padding-left: 0;
+}
+
+/* Labels */
+
+.footer-label {
+    color: #85859b;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 13px;
+}
+
+/* Links */
+
+.footer-column a {
+    color: #e4e4eb;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #f16a37;
+}
+
+.footer-column .footer-accent {
+    color: #f16a37;
+}
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.footer-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 30px 0 55px;
+}
+
+/* =========================================
+   BRAND TYPOGRAPHY
+========================================= */
+
+.footer-brand {
+    width: 100%;
+    text-align: center;
+
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(45px, 11vw, 145px);
+    font-weight: 400;
+    letter-spacing: -5px;
+    line-height: 1;
+
+    color: #ed6038;
+    white-space: nowrap;
+    margin-bottom: 25px;
+}
+
+/* =========================================
+   FOOTER BOTTOM
+========================================= */
+
+.footer-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    align-items: center;
+    gap: 20px;
+
+    color: #b1b1c0;
+    font-size: 11px;
+}
+
+.footer-copyright {
+    text-align: left;
+}
+
+.footer-description {
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.footer-legal {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.footer-legal a {
+    color: #b1b1c0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+    color: #ed6038;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 992px) {
+
+    .main-footer {
+        padding: 50px 4% 35px;
+    }
+
+    .footer-brand {
+        letter-spacing: -3px;
+    }
+
+    .footer-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-description {
+        display: none;
+    }
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .main-footer {
+        padding: 40px 20px 30px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 30px;
+    }
+
+    .footer-contact {
+        grid-column: 1 / -1;
+        padding: 0 0 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .footer-column {
+        padding: 0 12px;
+        border-left: none;
+    }
+
+    .footer-column:nth-child(2) {
+        padding-left: 0;
+    }
+
+    .footer-label {
+        margin-bottom: 7px;
+    }
+
+    .footer-column a {
+        font-size: 13px;
+    }
+
+    .footer-divider {
+        margin: 30px 0;
+    }
+
+    .footer-brand {
+        font-size: clamp(35px, 10.5vw, 60px);
+        letter-spacing: -2px;
+        margin-bottom: 25px;
+    }
+
+    .footer-bottom {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .footer-copyright {
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .footer-legal {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+}
