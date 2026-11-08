@@ -12,13 +12,14 @@ function Navbar() {
     const handleSearch = async () => {
         if (!query.trim()) return;
  
-        try {
-            const res = await fetch(`${window.BASE_URL}/api/home/search?query=${query}`);
-            const data = await res.json();
-            navigate('/searchlist', { state: { results: data } });
-        } catch (error) {
-            console.error("Search error:", error);
-        }
+        // try {
+        //     const res = await fetch(`${window.BASE_URL}/api/home/search?query=${query}`);
+        //     const data = await res.json();
+        //     navigate('/searchlist', { state: { results: data } });
+        // } catch (error) {
+        //     console.error("Search error:", error);
+        // }
+        navigate(`/products?search=${encodeURIComponent(query.trim())}`);
     };
 
     return (
