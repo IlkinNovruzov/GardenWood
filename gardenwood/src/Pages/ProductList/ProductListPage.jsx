@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import ProductCard from "../../Components/ProductCard/ProductCard";
+import "./ProductList.css";
 
 function ProductListPage() {
     const [searchParams] = useSearchParams();
@@ -31,7 +32,7 @@ function ProductListPage() {
                 if (categoryId) {
                     params.append('categoryId', categoryId);
                 }
-console.log(params.toString())
+                console.log(params.toString())
                 const response = await fetch(
                     `${window.BASE_URL}/api/admin/product/listt?${params.toString()}`,
                     { signal: controller.signal }
@@ -71,18 +72,23 @@ console.log(params.toString())
     }
 
     return (
-        <div className="product-list">
+        <div className="product-grid">
 
             {products.length === 0 ? (
                 <p className="no-products">No products found.</p>
             ) : (
                 products.map(product => (
-                    <ProductCard
+                    <Link
+                        to={`/products/${product.id}`}
+                        className="product-link"
                         key={product.id}
-                        image={product.images?.[0]?.imageUrl ?? ""}
-                        name={product.name}
-                        price={product.price}
-                    />
+                    >
+                        <ProductCard
+                            image={product.images?.[0]?.imageUrl ?? ""}
+                            name={product.name}
+                            price={product.price}
+                        />
+                    </Link>
                 ))
             )}
 

@@ -1,0 +1,35 @@
+.carousel-full-width {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel-full-width .carousel {
+    width: 100%;
+}
+
+.carousel-full-width .carousel .slider-wrapper {
+    width: 100%;
+}
+
+.carousel-full-width .carousel-image {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .carousel-full-width .carousel-image {
+        height: 400px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .carousel-full-width .carousel-image {
+        height: 250px;
+    }
+}

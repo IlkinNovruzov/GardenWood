@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from "react-router-dom";
 import './Footer.css';
 
 function Footer() {
@@ -8,62 +9,83 @@ function Footer() {
 
       <div className="footer-container">
 
-        {/* Footer Columns */}
         <div className="footer-content">
 
           {/* Contact */}
           <div className="footer-column footer-contact">
+
             <span className="footer-label">Əlaqə</span>
 
-            <a href="/contact">Bizimlə əlaqə</a>
+            <Link to="/contact">Bizimlə əlaqə</Link>
+
             <a href="mailto:info@gardenwood.az">
               info@gardenwood.az
             </a>
-            <a href="/contact" className="footer-accent">
+
+            <Link to="/contact" className="footer-accent">
               Ünvanımız
-            </a>
+            </Link>
+
           </div>
 
           {/* Discover */}
           <div className="footer-column">
+
             <span className="footer-label">Kəşf edin</span>
 
-            <a href="/">Ana səhifə</a>
-            <a href="/products">Məhsullar</a>
-            <a href="/about">Haqqımızda</a>
-            <a href="/contact">Əlaqə</a>
+            <Link to="/">Ana səhifə</Link>
+            <Link to="/products">Məhsullar</Link>
+            <Link to="/about">Haqqımızda</Link>
+            <Link to="/contact">Əlaqə</Link>
+
           </div>
 
           {/* Social Media */}
           <div className="footer-column">
+
             <span className="footer-label">Bizi izləyin</span>
 
-            <a href="https://instagram.com/" target="_blank" rel="noreferrer">
+            <a
+              href="https://instagram.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Instagram
             </a>
-            <a href="https://facebook.com/" target="_blank" rel="noreferrer">
+
+            <a
+              href="https://facebook.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Facebook
             </a>
-            <a href="https://pinterest.com/" target="_blank" rel="noreferrer">
+
+            <a
+              href="https://pinterest.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Pinterest
             </a>
+
           </div>
 
         </div>
 
-        {/* Divider */}
         <div className="footer-divider"></div>
 
-        {/* Brand Name */}
+        {/* Brand */}
         <div className="footer-brand">
           GARDEN WOOD
         </div>
 
-        {/* Bottom Footer */}
+        {/* Bottom */}
         <div className="footer-bottom">
 
           <span className="footer-copyright">
-            © {new Date().getFullYear()} Garden Wood. Bütün hüquqlar qorunur.
+            © {new Date().getFullYear()} Garden Wood.
+            Bütün hüquqlar qorunur.
           </span>
 
           <p className="footer-description">
@@ -71,9 +93,17 @@ function Footer() {
           </p>
 
           <div className="footer-legal">
-            <a href="/privacy-policy">Məxfilik</a>
+
+            <Link to="/privacy-policy">
+              Məxfilik
+            </Link>
+
             <span>•</span>
-            <a href="/terms">İstifadə şərtləri</a>
+
+            <Link to="/terms">
+              İstifadə şərtləri
+            </Link>
+
           </div>
 
         </div>

@@ -1,34 +1,76 @@
-.product-card {
-    width: 40%;
-    background-color: rgb(236, 233, 229);
-    border-radius: 9px;
-    padding: 0 10px;
-    margin: 20px auto;
-    text-align: center;
-    font-weight: bold;
-    font-size: larger;
-
-    img {
-        width: 100%;
-        border-radius: 9px;
-        height: 260px;
-        object-fit: contain;
-    }
-
-    .info {
-        display: flex;
-        justify-content: space-between;
-
-        * {
-            margin: 5px 0;
-        }
-    }
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
 }
 
-@media (max-width: 425px) {
-    .product-card {
-        width: 85%;
-        margin: 10px 0;
-        font-size: medium;
+.product-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--color-surface-alt);
+    cursor: pointer;
+}
+
+.product-card-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-card-image {
+    transform: scale(1.05);
+}
+
+.product-card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 14px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.65),
+        transparent 45%
+    );
+    color: white;
+}
+
+.product-card-overlay h3 {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    margin: 0;
+}
+
+.product-card-overlay span {
+    font-family: var(--font-body);
+    font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .product-card-overlay {
+        padding: 10px;
+    }
+
+    .product-card-overlay h3 {
+        font-size: 15px;
+    }
+
+    .product-card-overlay span {
+        font-size: 12px;
     }
 }

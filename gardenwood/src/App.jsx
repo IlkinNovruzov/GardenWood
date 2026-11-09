@@ -4,7 +4,7 @@ import './App.css'
 import Home from './Pages/Home/Home';
 import About from './Pages/About/About';
 import Contact from './Pages/Contact/Contact';
-import ProductListPage from './Pages/Home/ProductListPage';
+import ProductListPage from './Pages/ProductList/ProductListPage';
 import Navbar from './Components/Navbar/Navbar';
 import AdminAccess from './Pages/AdminPanel/AdminAccess';
 import Dashboard from './Pages/AdminPanel/Dashboard/Dashboard';
@@ -12,6 +12,7 @@ import CategoryManager from './Pages/AdminPanel/Category/CategoryManager';
 import ProductManager from './Pages/AdminPanel/Product/ProductManager';
 import CarouselManager from './Pages/AdminPanel/Carousel/CarouselManager';
 import Footer from './Components/Footer/Footer';
+import ProductDetails from './Pages/ProductDetails/ProductDetails';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/adminpanel/categories" element={<CategoryManager />} />
         <Route path="/adminpanel/products" element={<ProductManager />} />
         <Route path="/adminpanel/carousels" element={<CarouselManager />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
       </Routes>
       <Footer />
     </Router>

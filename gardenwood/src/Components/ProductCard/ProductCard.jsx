@@ -6,10 +6,10 @@ import "./ProductCard.css";
 function ProductCard({ image, name, price }) {
   return (
     <div className="product-card">
-      <img src={image} alt={name} />
-      <div className="info">
+      <img src={image} alt={name} className="product-card-image" />
+      <div className="product-card-overlay">
         <h3>{name}</h3>
-        <p>{price} $</p>
+        <span>{price} $</span>
       </div>
     </div>
   );
