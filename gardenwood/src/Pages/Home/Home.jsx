@@ -1,8 +1,9 @@
-
+import UniversalCarousel from "../../Components/UniversalCarousel/UniversalCarousel";
 import { useEffect, useState, useRef } from 'react';
-import { FaAward, FaPalette, FaShieldAlt, FaCouch } from 'react-icons/fa';
+import { FaAward, FaPalette, FaShieldAlt, FaCouch ,FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa';
 import { FaArrowTrendUp } from "react-icons/fa6";
 import FurnitureCarousel from '../../Components/FurnitureCarousel/FurnitureCarousel';
+import ProductCard from '../../Components/ProductCard/ProductCard';
 import './Home.css';
 import { Link } from 'react-router-dom';
 
@@ -237,38 +238,27 @@ function Home() {
           )}
 
           <div className="products-container">
-
-            {products.map((product) => {
-              const imageUrl = product.images?.[0]?.imageUrl;
-
-              return (
-
-                <div className="product-card" key={product.id}>
-
-                  <div className="product-image">
-                    <img
-                      src={imageUrl || '/images/no-image.webp'}
-                      alt={product.name || 'Furniture product'}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <div className="product-info product-card-content">
-                    <h3 className="product-card-title">
-                      {product.name}
-                    </h3>
-
-                    <p className="product-price">
-                      {product.price} ₼
-                    </p>
-                  </div>
-
-                </div>
-
-              );
-            })}
-
           </div>
+          <UniversalCarousel
+            autoPlay={true}
+            scrollAmount={300}
+            className="related-carousel"
+          >
+            {products.map((item) => (
+              <div className="related-product-item" key={item.id}>
+                <Link to={`/products/${item.id}`}
+                  className="product-link"
+                  key={item.id}
+                >
+                  <ProductCard
+                    image={item.images?.[0]?.imageUrl ?? ""}
+                    name={item.name}
+                    price={item.price}
+                  />
+                </Link>
+              </div>
+            ))}
+          </UniversalCarousel>
           <Link to="/products" className="view-all-link">
             <button className="view-all btn btn-accent">
               Hamısına bax
@@ -278,6 +268,68 @@ function Home() {
         </div>
 
       </section>
+
+      {/* CONTACT */}
+      <section className="contact-section section"> 
+
+{/* CONTACT */}
+<section className="contact-section section">
+
+    <div className="container">
+        <div className="contact-content">
+            <div className="contact-text">
+                <span className="contact-subtitle">
+                   Bizimlə Əlaqə Saxlayın
+                </span>
+                <p>
+                    Koleksiyalarımızı keşf edin və ən son mebel dizaynları və yeniliklər üçün sosial media hesablarımızı izləyin.
+                </p>
+            </div>
+
+            <div className="contact-socials">
+                <a
+                    href="https://www.instagram.com/ilkin_novruzov_04/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link instagram"
+                    aria-label="Instagram"
+                >
+                    <FaInstagram />
+                    <span>Instagram</span>
+                </a>
+
+                <a
+                    href="https://www.facebook.com/YOUR_USERNAME"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link facebook"
+                    aria-label="Facebook"
+                >
+                    <FaFacebookF />
+                    <span>Facebook</span>
+                </a>
+
+                <a
+                    href="https://wa.me/YOUR_PHONE_NUMBER"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link whatsapp"
+                    aria-label="WhatsApp"
+                >
+                    <FaWhatsapp />
+                    <span>WhatsApp</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        </section>
+
       {/* WHY CHOOSE US */}
       <section className="why-choose-us section">
 

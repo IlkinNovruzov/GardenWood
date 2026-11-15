@@ -67,7 +67,7 @@ function ProductListPage() {
         return <div className="product-list">Loading products...</div>;
     }
 
-    if (error) {
+    if (error) { 
         return <div className="product-list">{error}</div>;
     }
 

@@ -60,15 +60,6 @@ function Footer() {
             >
               Facebook
             </a>
-
-            <a
-              href="https://pinterest.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Pinterest
-            </a>
-
           </div>
 
         </div>

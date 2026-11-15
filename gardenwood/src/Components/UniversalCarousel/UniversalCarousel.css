@@ -1,0 +1,56 @@
+
+.universal-carousel {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+
+.universal-carousel-track {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 8px 4px 15px;
+}
+
+.universal-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.universal-carousel-track > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+}
+
+
+/* Category cards */
+.categories-carousel .category-item {
+    width: 32%;
+}
+
+/* Related product cards */
+.related-carousel .related-product-item {
+    width: 32%;
+}
+
+@media (max-width: 700px) {
+    .categories-carousel .category-item {
+        width: 32%;
+    }
+
+    .related-carousel .related-product-item {
+        width: 32%;
+    }
+    .universal-carousel-track {
+        gap: 14px;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+}

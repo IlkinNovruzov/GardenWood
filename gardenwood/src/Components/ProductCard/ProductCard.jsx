@@ -9,7 +9,7 @@ function ProductCard({ image, name, price }) {
       <img src={image} alt={name} className="product-card-image" />
       <div className="product-card-overlay">
         <h3>{name}</h3>
-        <span>{price} $</span>
+        <span>{price} ₼</span>
       </div>
     </div>
   );
