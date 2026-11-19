@@ -5,16 +5,27 @@
     min-width: 0;
 }
 
+/* Carousel track */
 .universal-carousel-track {
     display: flex;
     align-items: stretch;
     gap: 20px;
+
     width: 100%;
+    min-width: 0;
+
     overflow-x: auto;
     overflow-y: hidden;
+
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+
     scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    -webkit-overflow-scrolling: touch;
+
     padding: 8px 4px 15px;
 }
 
@@ -22,11 +33,13 @@
     display: none;
 }
 
+/* Carousel items */
 .universal-carousel-track > * {
     flex-shrink: 0;
+    min-width: 0;
     scroll-snap-align: start;
+    box-sizing: border-box;
 }
-
 
 /* Category cards */
 .categories-carousel .category-item {
@@ -38,19 +51,36 @@
     width: 32%;
 }
 
-@media (max-width: 700px) {
-    .categories-carousel .category-item {
-        width: 32%;
+/* Tablet */
+@media (max-width: 1024px) {
+    .universal-carousel-track {
+        gap: 16px;
     }
 
     .related-carousel .related-product-item {
-        width: 32%;
+        width: 48%;
     }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
     .universal-carousel-track {
         gap: 14px;
+        padding: 8px 2px 15px;
     }
 
-    .carousel-arrow {
-        display: none;
+    .categories-carousel .category-item {
+        width: 75%;
+    }
+
+    .related-carousel .related-product-item {
+        width: 82%;
+    }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .universal-carousel-track {
+        scroll-behavior: auto;
     }
 }

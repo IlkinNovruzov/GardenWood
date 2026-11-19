@@ -1,6 +1,5 @@
 
-import React, { useRef, useEffect } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import React, { useEffect, useRef } from "react";
 import "./UniversalCarousel.css";
 
 function UniversalCarousel({
@@ -10,52 +9,100 @@ function UniversalCarousel({
     scrollAmount = 300,
     className = ""
 }) {
-    const trackRef = useRef(null);
-
-    const scroll = (direction) => {
-        if (!trackRef.current) return;
-
-        trackRef.current.scrollBy({
-            left: direction * scrollAmount,
-            behavior: "smooth"
-        });
-    };
+    const carouselRef = useRef(null);
+    const isPausedRef = useRef(false);
 
     useEffect(() => {
-        if (!autoPlay) return;
+        const carousel = carouselRef.current;
+
+        if (!carousel || !autoPlay) return;
+
+        // İstifadəçi hərəkətin azaldılmasını istəyirsə autoplay işləmir
+        const reducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
+
+        if (reducedMotion.matches) return;
+
+        const pause = () => {
+            isPausedRef.current = true;
+        };
+
+        const resume = () => {
+            isPausedRef.current = false;
+        };
+
+        const handleVisibilityChange = () => {
+            isPausedRef.current = document.hidden;
+        };
+
+        // İstifadəçi ilə qarşılıqlı əlaqə
+        carousel.addEventListener("pointerenter", pause);
+        carousel.addEventListener("pointerleave", resume);
+        carousel.addEventListener("pointerdown", pause);
+        carousel.addEventListener("pointerup", resume);
+        carousel.addEventListener("pointercancel", resume);
+
+        // Klaviatura ilə idarəetmə
+        carousel.addEventListener("focusin", pause);
+        carousel.addEventListener("focusout", resume);
+
+        // Başqa tab açıldıqda autoplay dayandırılır
+        document.addEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
 
         const timer = setInterval(() => {
-            const track = trackRef.current;
-
-            if (!track) return;
+            if (isPausedRef.current || document.hidden) return;
 
             const maxScroll =
-                track.scrollWidth - track.clientWidth;
+                carousel.scrollWidth - carousel.clientWidth;
 
-            if (maxScroll <= 0) return;
+            // Sürüşdürmək üçün kifayət qədər element yoxdursa
+            if (maxScroll <= 5) return;
 
-            if (track.scrollLeft >= maxScroll - 10) {
-                track.scrollTo({
+            const currentPosition = carousel.scrollLeft;
+            const isAtEnd =
+                currentPosition >= maxScroll - 5;
+
+            if (isAtEnd) {
+                carousel.scrollTo({
                     left: 0,
                     behavior: "smooth"
                 });
             } else {
-                track.scrollBy({
+                carousel.scrollBy({
                     left: scrollAmount,
                     behavior: "smooth"
                 });
             }
-        }, interval);
+        }, Math.max(interval, 1000));
 
-        return () => clearInterval(timer);
+        return () => {
+            clearInterval(timer);
 
+            carousel.removeEventListener("pointerenter", pause);
+            carousel.removeEventListener("pointerleave", resume);
+            carousel.removeEventListener("pointerdown", pause);
+            carousel.removeEventListener("pointerup", resume);
+            carousel.removeEventListener("pointercancel", resume);
+
+            carousel.removeEventListener("focusin", pause);
+            carousel.removeEventListener("focusout", resume);
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+        };
     }, [autoPlay, interval, scrollAmount]);
 
     return (
         <div className={`universal-carousel ${className}`}>
             <div
                 className="universal-carousel-track"
-                ref={trackRef}
+                ref={carouselRef}
             >
                 {children}
             </div>
