@@ -13,6 +13,7 @@ import ProductManager from './Pages/AdminPanel/Product/ProductManager';
 import CarouselManager from './Pages/AdminPanel/Carousel/CarouselManager';
 import Footer from './Components/Footer/Footer';
 import ProductDetails from './Pages/ProductDetails/ProductDetails';
+import FurnitureDesigner from './Pages/FurnitureDesigner/FurnitureDesigner';
 
 function App() {
 
@@ -31,6 +32,8 @@ function App() {
         <Route path="/adminpanel/products" element={<ProductManager />} />
         <Route path="/adminpanel/carousels" element={<CarouselManager />} />
         <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/furniture-designer/:id" element={<FurnitureDesigner />}
+        />
       </Routes>
       <Footer />
     </Router>

@@ -412,3 +412,80 @@
         font-size: 13px;
     }
 }
+/* FURNITURE DESIGNER BUTTON */
+
+.furniture-designer-btn {
+    width: 100%;
+    max-width: 420px;
+    min-height: 76px;
+    margin-top: 25px;
+    padding: 14px 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: #44383e;
+    border: 1px solid #44383e;
+    border-radius: 12px;
+
+    color: #fff;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.furniture-designer-btn:hover {
+    background: #a97848;
+    border-color: #a97848;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(68, 56, 62, 0.15);
+}
+
+.designer-btn-icon {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    font-size: 21px;
+}
+
+.designer-btn-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.designer-btn-content strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.designer-btn-content small {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.designer-btn-arrow {
+    font-size: 19px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.furniture-designer-btn:hover .designer-btn-arrow {
+    transform: translate(3px, -3px);
+}
+
+@media (max-width: 700px) {
+    .furniture-designer-btn {
+        max-width: 100%;
+    }
+}

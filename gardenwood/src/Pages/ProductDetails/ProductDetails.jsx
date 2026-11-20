@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import "./ProductDetails.css";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import UniversalCarousel from "../../Components/UniversalCarousel/UniversalCarousel";
+import { FiSliders, FiArrowUpRight } from "react-icons/fi";
 function ProductDetailsPage() {
     const { id } = useParams();
     const [relatedProducts, setRelatedProducts] = useState([]);
@@ -173,7 +174,21 @@ function ProductDetailsPage() {
                     <div className="product-price">
                         <span>{product.price} AZN</span>
                     </div>
+                    <Link
+                        to={`/furniture-designer/${product.id}`}
+                        className="furniture-designer-btn"
+                    >
+                        <span className="designer-btn-icon">
+                            <FiSliders />
+                        </span>
 
+                        <span className="designer-btn-content">
+                            <strong>Design Your Furniture</strong>
+                            <small>Customize colors, materials and more</small>
+                        </span>
+
+                        <FiArrowUpRight className="designer-btn-arrow" />
+                    </Link>
                     <div className="product-info-divider"></div>
 
                     <div className="product-info-footer">
